@@ -52,6 +52,7 @@ router.put("/:id", (req, res) => {
 
   if (taskIndex === -1) {
     res.status(404).json({ error: "Task Not Found!" });
+    return;
   }
 
   tasks[taskIndex] = {
