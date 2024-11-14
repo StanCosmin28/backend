@@ -32,7 +32,7 @@ router.post("/", (req, res) => {
   res.json(newTask);
 });
 
-router.patch("/:id/complete", (req, res) => {
+router.patch("/:id", (req, res) => {
   const tasks = getTasks();
   const taskId = parseInt(req.params.id);
   const task = tasks.find((t) => t.id === taskId);
