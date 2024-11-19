@@ -1,0 +1,24 @@
+20241118	19:41:36	9e1535d0-ae0d-497a-8588-9691a00fddac	ReferenceError: fs is not defined
+20241118	19:42:13	5fccb833-1fb3-4a28-bcb4-cb0c999bc298	ReferenceError: path is not defined
+20241118	19:44:10	37dda3b0-1fd8-4372-977b-d727d8225b3e	TypeError: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+20241118	19:45:35	ba99826f-3603-427c-bd5b-74f3baff6882	ReferenceError: employees is not defined
+20241118	19:45:57	f542b542-5e70-408e-8fdb-06c8e79174d2	TypeError: Spread syntax requires ...iterable[Symbol.iterator] to be a function
+20241118	19:50:51	920d75a2-ccab-46c1-b90f-ea658807a696	TypeError: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+20241119	17:18:09	e0a92b8f-6e50-4446-b7f6-f5a4fecfd5bf	TypeError: Cannot read properties of undefined (reading 'params')
+20241119	17:18:31	55784a23-24d5-4d7b-9c6c-afd26dfa84fb	TypeError: Cannot read properties of undefined (reading 'params')
+20241119	17:20:55	dd3ab897-3377-4c11-bf19-9c89caca077a	TypeError: Cannot read properties of undefined (reading '0')
+20241119	17:20:57	8c4648aa-1884-4792-b75a-296c06f5e4b8	TypeError: Cannot read properties of undefined (reading '0')
+20241119	17:24:49	bbea0ab2-d5b2-41e2-bc1d-ba10ca3eab80	TypeError: Cannot read properties of undefined (reading 'firstname')
+20241119	17:25:33	c8bfe8ed-41b4-40ec-a022-24f7a5f894a3	TypeError: Cannot read properties of undefined (reading 'firstname')
+20241119	17:26:04	b5f00334-78db-4ed1-b5b4-11a784def6aa	TypeError: Cannot read properties of undefined (reading 'firstname')
+20241119	17:26:11	7daa008d-6b66-4c8b-825c-814b6a770331	TypeError: Cannot read properties of undefined (reading 'firstname')
+20241119	17:26:18	39aa8c31-d9ea-4bf4-9fe6-651b08084e55	TypeError: Cannot read properties of undefined (reading 'firstname')
+20241119	17:26:47	8ad8e9f2-2a13-4405-ad27-a277491cbb56	TypeError: Cannot read properties of undefined (reading 'length')
+20241119	17:27:42	ce476d3c-d683-41b0-a286-de12ad1225c5	TypeError: Cannot read properties of undefined (reading 'firstname')
+20241119	17:28:13	8b779953-39d6-46c3-8ad1-d676bdfd0f65	TypeError: Cannot read properties of undefined (reading 'firstname')
+20241119	17:28:41	b7ac4256-ee6a-4590-8b3a-66f20194ac3f	TypeError: Cannot read properties of undefined (reading 'firstname')
+20241119	17:29:16	6108f924-4765-4937-abf9-51b8f0b81d72	Error: Cannot set headers after they are sent to the client
+20241119	17:29:20	f5a6f39a-65ce-444b-9461-f697389aeddb	Error: Cannot set headers after they are sent to the client
+20241119	17:56:05	c11ab90c-f9f8-414d-ad5f-c36a303e9a4c	TypeError: Cannot read properties of undefined (reading 'tasks')
+20241119	17:56:09	390fc5e2-c481-40b8-9679-e5abcbeb17fa	TypeError: Cannot read properties of undefined (reading 'tasks')
+20241119	17:57:05	a165f0d2-f275-4e57-8716-16cfc14aa67b	TypeError: Cannot read properties of undefined (reading 'tasks')

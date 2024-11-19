@@ -1,0 +1,70 @@
+[
+  {
+    "id": 1,
+    "firstname": "Dave",
+    "lastname": "Gray",
+    "tasks": [
+      {
+        "id": 1,
+        "description": "Complete project documentation",
+        "completed": false
+      },
+      {
+        "id": 2,
+        "description": "Review team's weekly progress",
+        "completed": true
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "firstname": "John",
+    "lastname": "Smith",
+    "tasks": [
+      {
+        "id": 1,
+        "description": "Prepare presentation slides",
+        "completed": false
+      },
+      {
+        "id": 2,
+        "description": "Update client on project status",
+        "completed": true
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "firstname": "Cosmin",
+    "lastname": "Stan",
+    "tasks": [
+      {
+        "id": 1,
+        "description": "Optimize database queries",
+        "completed": true
+      },
+      {
+        "id": 2,
+        "description": "Schedule team meeting",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "firstname": "Test-Edited",
+    "lastname": "Edited-tesT",
+    "tasks": [
+      {
+        "id": 1,
+        "description": "Test application deployment",
+        "completed": false
+      },
+      {
+        "id": 2,
+        "description": "Fix reported bugs",
+        "completed": true
+      }
+    ]
+  }
+]
