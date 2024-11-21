@@ -294,3 +294,8 @@
 20241119	22:52:36	2f4d9c56-34e6-4448-8113-0498555cd8ba	GET	undefined	/favicon.ico
 20241119	23:27:20	f12e6b5c-9b27-49aa-a933-9b152deae979	POST	undefined	/register
 20241119	23:28:05	7a3e87ea-6a52-459f-85c6-329f3028e32f	POST	undefined	/register
+20241120	13:11:58	db9b032c-2530-4974-8c20-230fcde6009b	POST	undefined	/register
+20241120	13:12:18	e3a5a940-5f2d-4db0-8010-c5a48293ee8b	POST	undefined	/register
+20241120	13:14:05	c1f5798a-c4a9-4b68-8571-9cece5084d8f	POST	undefined	/register
+20241120	13:24:01	7652f2c9-6589-449a-9e6f-57ffb2e32842	POST	undefined	/employees
+20241120	13:24:12	81495a0b-62ca-4b81-89e9-a396b2d8c2ea	POST	undefined	/auth
