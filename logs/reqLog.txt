@@ -335,3 +335,4 @@
 20241127	13:46:52	7b3a3970-27b6-4ad3-957a-be31c16e927c	GET	undefined	/favicon.ico
 20241127	13:47:01	bd0cf84c-31e1-4ab3-b591-f55aa1494ef7	GET	undefined	/ugysdabdgas
 20241127	13:47:01	fd421e79-ea82-4798-a513-e02df83d9038	GET	undefined	/favicon.ico
+20241130	19:36:54	d1e25c78-18cd-4e28-97ed-bf9bf9ea26d0	POST	undefined	/register
