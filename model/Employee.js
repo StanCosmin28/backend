@@ -1,8 +1,17 @@
 const mongoose = require("mongoose");
-const { stringify } = require("uuid");
-const { getEmployeeTasks } = require("../controllers/employeesController");
 
 const Schema = mongoose.Schema;
+
+const taskSchema = new Schema({
+  description: {
+    type: String,
+    required: true,
+  },
+  completed: {
+    type: Boolean,
+    completed: true,
+  },
+});
 
 const employeeSchema = new Schema({
   firstname: {
@@ -13,6 +22,6 @@ const employeeSchema = new Schema({
     type: String,
     required: true,
   },
+  tasks: [taskSchema],
 });
-//modeule !== model
-module.exports = mongoose.model("Employees", employeeSchema);
+module.exports = mongoose.model("Employee", employeeSchema);
