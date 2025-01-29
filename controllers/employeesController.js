@@ -1,120 +1,222 @@
-const fs = require("fs");
-const path = require("path");
-// const tasks = require("../model/tasks.json");
-const data = {
-  employees: require("../model/employees.json"),
-  setEmployees: function (data) {
-    this.employees = data;
-  },
+const Employee = require("../model/Employee");
+
+const getAllEmployees = async (req, res) => {
+  const employees = await Employee.find();
+  if (!employees) return res.status(204).json({ message: "No Employees" });
+  // const roles = req.roles;
+
+  res.json(employees);
 };
 
-const saveEmployeesToLocalFile = (data) => {
-  return fs.writeFileSync(
-    path.join(__dirname, "..", "model", "employees.json"),
-    JSON.stringify(data, null, 2),
-    "utf-8"
-  );
-};
-
-const getAllEmployees = (req, res) => {
-  res.json(data.employees);
-};
-
-const createNewEmployee = (req, res) => {
-  const newEmployee = {
-    id: data.employees?.length
-      ? data.employees[data.employees.length - 1].id + 1
-      : 1,
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    tasks:
+const createNewEmployee = async (req, res) => {
+  if (!req.body?.firstname || !req.body?.lastname) {
+    return res
+      .status(400)
+      .json({ message: "First and last name are required" });
+  }
+  try {
+    const tasks =
       req.body.tasks?.map((task, index) => ({
         id: index + 1,
         description: task.description,
         completed: task.completed || false,
-      })) || [],
-  };
+      })) || [];
 
-  if (!newEmployee.firstname || !newEmployee.lastname) {
-    return res
-      .status(400)
-      .json({ message: "First and last names are required." });
+    const result = await Employee.create({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      tasks: tasks,
+    });
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+  }
+};
+const test = "this is a test for me ";
+
+const updateEmployee = async (req, res) => {
+  if (!req?.body?.id) {
+    return res.status(400).json({ message: "User not found" });
   }
 
-  data.setEmployees([...data.employees, newEmployee]);
-  res.status(201).json(data.employees);
-  saveEmployeesToLocalFile(data.employees);
-};
+  const employee = await Employee.findOne({ _id: req.body.id });
+  if (!employee) return res.status(204).json({ message: "No employee" });
 
-const updateEmployee = (req, res) => {
-  const employee = data.employees.find(
-    (emp) => emp.id === parseInt(req.body.id)
-  );
-  if (!employee) {
-    return res
-      .status(400)
-      .json({ message: `Employee ID ${req.body.id} not found` });
+  if (req.body?.firstname) employee.firstname = req.body.firstname;
+  if (req.body?.lastname) employee.lastname = req.body.lastname;
+  if (req.body?.tasks) {
+    if (!Array.isArray(req.body.tasks)) {
+      return res.status(400).json({ message: "Tasks should be an array" });
+    }
+
+    if (req.body?.tasks && Array.isArray(req.body.tasks)) {
+      req.body.tasks.forEach((newTask) => {
+        const existingTaskIndex = employee.tasks.findIndex((task) => {
+          return task.description === newTask.description;
+        });
+
+        if (existingTaskIndex !== -1) {
+          console.log("existing task");
+          employee.tasks[existingTaskIndex] = {
+            ...employee.tasks[existingTaskIndex],
+            ...newTask,
+          };
+        } else {
+          console.log("new task");
+          employee.tasks.push(newTask);
+        }
+      });
+    }
   }
-  if (req.body.firstname) employee.firstname = req.body.firstname;
-  if (req.body.lastname) employee.lastname = req.body.lastname;
-  const filteredArray = data.employees.filter(
-    (emp) => emp.id !== parseInt(req.body.id)
-  );
-  const unsortedArray = [...filteredArray, employee];
-  data.setEmployees(
-    unsortedArray.sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0))
-  );
-  res.json(data.employees);
-  saveEmployeesToLocalFile(data.employees);
+
+  const result = await employee.save();
+  res.json(result);
 };
 
-const deleteEmployee = (req, res) => {
-  const employee = data.employees.find(
-    (emp) => emp.id === parseInt(req.body.id)
-  );
-  if (!employee) {
+const deleteEmployee = async (req, res) => {
+  if (!req.body?.id) return res.status(400).json({ message: "Not found" });
+
+  const employee = await Employee.findOne({ _id: req.body.id }).exec();
+
+  if (!employee) return res.status(400).json({ message: "Not found" });
+
+  const result = await employee.deleteOne({ _id: req.body.id });
+  res.json(result);
+};
+
+const deleteEmployeeTask = async (req, res) => {
+  const { employeeId, taskId } = req.body;
+
+  if (!employeeId || !taskId) {
     return res
       .status(400)
-      .json({ message: `Employee ID ${req.body.id} not found` });
+      .json({ message: "Employee ID and Task ID are required" });
   }
-  const filteredArray = data.employees.filter(
-    (emp) => emp.id !== parseInt(req.body.id)
-  );
-  data.setEmployees([...filteredArray]);
-  res.json(data.employees);
-  saveEmployeesToLocalFile(data.employees);
+
+  try {
+    const employee = await Employee.findById(employeeId);
+
+    if (!employee) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    const taskIndex = employee.tasks.findIndex(
+      (task) => task._id.toString() === taskId
+    );
+    if (taskIndex === -1) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    employee.tasks.splice(taskIndex, 1);
+
+    await employee.save();
+
+    res.status(200).json({ message: "Task deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "An error occurred" });
+  }
 };
 
-const getEmployee = (req, res) => {
-  const employee = data.employees.find(
-    (emp) => emp.id === parseInt(req.params.id)
-  );
+const addEmployeeTask = async (req, res) => {
+  const { id } = req.params;
+  const { task } = req.body;
+
+  if (!id || !task || !task.description) {
+    return res.status(400).json({
+      message: "Employee ID and task description are required",
+    });
+  }
+
+  try {
+    const employee = await Employee.findById(id);
+    if (!employee) {
+      return res.status(404).json({ message: "Employee not found." });
+    }
+
+    const newTask = {
+      description: task.description,
+      completed: false,
+    };
+
+    employee.tasks.push(newTask);
+    await employee.save();
+
+    res.status(201).json(newTask);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred." });
+  }
+};
+
+const updateEmployeeTask = async (req, res) => {
+  const { id, taskId } = req.params;
+  const { task } = req.body;
+
+  if (!id || !taskId) {
+    return res.status(400).json({
+      message: "Employee ID and Task ID are required",
+    });
+  }
+
+  try {
+    const employee = await Employee.findById(id);
+    if (!employee) {
+      return res.status(404).json({ message: "Employee not found." });
+    }
+
+    const taskIndex = employee.tasks.findIndex(
+      (t) => t._id.toString() === taskId
+    );
+    if (taskIndex === -1) {
+      return res.status(404).json({ message: "Task not found." });
+    }
+
+    employee.tasks[taskIndex] = { ...employee.tasks[taskIndex], ...task };
+    await employee.save();
+
+    res.status(200).json(employee.tasks[taskIndex]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred." });
+  }
+};
+
+const getEmployee = async (req, res) => {
+  if (!req?.params?.id) return res.status(400).json({ message: "Not found" });
+
+  const employee = await Employee.findOne({ _id: req.params.id });
   if (!employee) {
-    return res
-      .status(400)
-      .json({ message: `Employee ID ${req.params.id} not found` });
+    return res.satus(400).json({ message: "Not found" });
   }
   res.json(employee);
 };
 
-const getEmployeeTasks = (req, res) => {
-  const employee = data.employees.find(
-    (emp) => emp.id === parseInt(req.params.id)
-  );
-  if (!employee.tasks) {
-    return res.status(400).json({
-      message: `Employee ${employee.firstname} ${employee.lastname} has no tasks`,
-    });
-  }
-  const tasks = employee.tasks.map((task) => task.description);
+const getEmployeeTasks = async (req, res) => {
+  if (!req.params?.id) return res.status(400).json({ message: "Not found" });
+
+  const employee = await Employee.findOne({ _id: req.params.id });
+  if (!employee) return res.status(400).json({ message: "Not found" });
+  const tasks = [...employee.tasks];
   res.json(tasks);
+};
+
+const getEmployeeTaskData = async (req, res) => {
+  const test = await Employee.findOne({ _id: req.body.id });
+  // console.log(req.body, test);
+  res.json(req.body, test);
 };
 
 module.exports = {
   getAllEmployees,
   createNewEmployee,
   updateEmployee,
+  updateEmployeeTask,
   deleteEmployee,
+  deleteEmployeeTask,
   getEmployee,
   getEmployeeTasks,
+  getEmployeeTaskData,
+  addEmployeeTask,
 };
