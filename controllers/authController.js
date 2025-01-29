@@ -1,5 +1,5 @@
 const User = require("../model/User");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const handleLogin = async (req, res) => {
@@ -14,8 +14,12 @@ const handleLogin = async (req, res) => {
   if (!foundUser) return res.sendStatus(401); //Unauthorized
 
   const match = await bcrypt.compare(pwd, foundUser.password);
+
   if (match) {
-    const roles = Object.values(foundUser.roles);
+    const roles = [...Object.values(foundUser.roles)];
+    // const roles = Object.values(foundUser.roles)
+    // console.log(foundUser.roles);
+    // console.log(roles);
     // create JWTs
     const accessToken = jwt.sign(
       {
@@ -43,7 +47,8 @@ const handleLogin = async (req, res) => {
       secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
-    res.json({ accessToken });
+
+    res.json({ accessToken, roles });
   } else {
     res.sendStatus(401);
   }

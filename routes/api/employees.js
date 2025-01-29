@@ -17,7 +17,20 @@ router
   )
   .delete(verifyRoles(ROLES_LIST.Admin), employeesController.deleteEmployee);
 
-router.route("/:id").get(employeesController.getEmployee);
-router.route("/:id/tasks").get(employeesController.getEmployeeTasks);
+router.delete(
+  "/:id",
+  verifyRoles(ROLES_LIST.Admin),
+  employeesController.deleteEmployeeTask
+);
+router.post(
+  "/:id/tasks",
+  verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),
+  employeesController.addEmployeeTask
+);
+router.put(
+  "/:id/tasks/:taskId",
+  verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),
+  employeesController.updateEmployeeTask
+);
 
 module.exports = router;

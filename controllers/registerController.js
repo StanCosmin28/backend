@@ -1,6 +1,6 @@
 const User = require("../model/User");
 const roles = require("../config/roles_list");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const handleNewUser = async (req, res) => {
   const { user, pwd } = req.body;
@@ -16,11 +16,11 @@ const handleNewUser = async (req, res) => {
   try {
     const hashedPwd = await bcrypt.hash(pwd, 10);
 
-    const result = User.create({
+    const result = await User.create({
       username: user,
       password: hashedPwd,
     });
-    res.status(201).json({ success: `New user ${result.user} created!` });
+    res.status(201).json({ success: `New user ${result.username} created!` });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

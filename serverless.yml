@@ -1,0 +1,12 @@
+# service: task-app-backend
+
+# provider:
+#   name: aws
+#   runtime: nodejs18.x
+
+# functions:
+#   app:
+#     handler: lambda.handler
+
+# plugins:
+#   - serverless-offline
